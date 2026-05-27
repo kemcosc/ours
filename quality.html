@@ -34,6 +34,21 @@
     </div>
   </nav>
 
+  <div class="catbar" id="catbar">
+    <div class="container">
+      <a href="shop.html" data-cat="all">All Peptides</a>
+      <span class="sep">·</span>
+      <a href="shop.html?cat=weight-loss" data-cat="weight-loss">Weight Loss</a>
+      <span class="sep">·</span>
+      <a href="shop.html?cat=anti-aging" data-cat="anti-aging">Anti-Aging</a>
+      <span class="sep">·</span>
+      <a href="shop.html?cat=injury-repair" data-cat="injury-repair">Injury Repair</a>
+      <span class="sep">·</span>
+      <a href="shop.html?cat=wellness" data-cat="wellness">Wellness</a>
+    </div>
+  </div>
+
+
   <section class="page-hero">
     <div class="container">
       <div class="eyebrow" id="page-eyebrow">Quality &amp; Testing</div>
@@ -131,5 +146,24 @@
   </script>
   <div hidden id="snipcart" data-api-key="YOUR_SNIPCART_PUBLIC_API_KEY" data-config-modal-style="side" data-currency="usd"></div>
   <script async src="https://cdn.snipcart.com/themes/v3.7.1/default/snipcart.js"></script>
+
+  <script>
+  (function () {
+    var bar = document.getElementById('catbar');
+    if (!bar) return;
+    var params = new URLSearchParams(window.location.search);
+    var cat = params.get('cat');
+    var path = window.location.pathname.split('/').pop() || 'index.html';
+    // On shop page with no ?cat, "All Peptides" is active. On shop with ?cat=X, that one is active.
+    // On other pages, nothing is active.
+    if (path === 'shop.html') {
+      var active = cat || 'all';
+      bar.querySelectorAll('a').forEach(function (a) {
+        if (a.dataset.cat === active) a.classList.add('active');
+      });
+    }
+  })();
+  </script>
+
 </body>
 </html>

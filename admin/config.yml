@@ -1,0 +1,116 @@
+# ============================================================
+# OURS PEPTIDES — CMS CONFIGURATION
+# Powered by Decap CMS (decapcms.org)
+# Note: the CMS login requires a Git-connected Netlify site with
+# Netlify Identity + Git Gateway enabled. It does not work with
+# drag-and-drop "Netlify Drop" deploys. You can always edit the
+# JSON files in /_data directly instead.
+# ============================================================
+
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+
+  # ── SITE-WIDE SETTINGS ─────────────────────────────────────
+  - name: "settings"
+    label: "⚙️ Site Settings"
+    files:
+      - name: "site"
+        label: "Company Info"
+        file: "_data/site.json"
+        format: json
+        fields:
+          - { label: "Company Name", name: "company_name", widget: "string" }
+          - { label: "Tagline", name: "tagline", widget: "string" }
+          - { label: "Support Email", name: "email", widget: "string" }
+          - { label: "Footer Description", name: "footer_description", widget: "text" }
+          - { label: "Legal Disclaimer", name: "disclaimer", widget: "text" }
+
+  # ── PRODUCTS ───────────────────────────────────────────────
+  - name: "catalog"
+    label: "🧪 Products"
+    files:
+      - name: "products"
+        label: "Product Catalog"
+        file: "_data/products.json"
+        format: json
+        fields:
+          - { label: "Page Eyebrow", name: "page_eyebrow", widget: "string" }
+          - { label: "Page Headline", name: "page_headline", widget: "string" }
+          - { label: "Page Subtitle", name: "page_subtitle", widget: "text" }
+          - label: "Categories (filter buttons)"
+            name: "categories"
+            widget: "list"
+            fields:
+              - { label: "ID (lowercase, no spaces)", name: "id", widget: "string" }
+              - { label: "Label", name: "label", widget: "string" }
+          - label: "Products"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.name}} — ${{fields.price}}"
+            fields:
+              - { label: "ID / SKU (unique, lowercase)", name: "id", widget: "string" }
+              - { label: "Name", name: "name", widget: "string" }
+              - label: "Category"
+                name: "category"
+                widget: "select"
+                options: ["weight-loss", "anti-aging", "injury-repair", "wellness"]
+              - { label: "Price (numbers only, e.g. 49.99)", name: "price", widget: "string" }
+              - { label: "Featured on homepage?", name: "featured", widget: "boolean", default: false }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Product Image (optional)", name: "image", widget: "image", required: false }
+
+  # ── PAGES ──────────────────────────────────────────────────
+  - name: "pages"
+    label: "📄 Pages"
+    files:
+      - name: "home"
+        label: "Homepage"
+        file: "_data/home.json"
+        format: json
+        fields:
+          - { label: "Hero Eyebrow", name: "hero_eyebrow", widget: "string" }
+          - { label: "Hero Headline", name: "hero_headline", widget: "string" }
+          - { label: "Hero Subtext", name: "hero_subtext", widget: "text" }
+          - { label: "Hero Button Text", name: "hero_cta_text", widget: "string" }
+          - { label: "Stat 1 Number", name: "stat1_number", widget: "string" }
+          - { label: "Stat 1 Label", name: "stat1_label", widget: "string" }
+          - { label: "Stat 2 Number", name: "stat2_number", widget: "string" }
+          - { label: "Stat 2 Label", name: "stat2_label", widget: "string" }
+          - { label: "Stat 3 Number", name: "stat3_number", widget: "string" }
+          - { label: "Stat 3 Label", name: "stat3_label", widget: "string" }
+          - { label: "Featured Eyebrow", name: "products_eyebrow", widget: "string" }
+          - { label: "Featured Headline", name: "products_headline", widget: "string" }
+          - { label: "Values Eyebrow", name: "values_eyebrow", widget: "string" }
+          - { label: "Values Headline", name: "values_headline", widget: "string" }
+          - { label: "Values Body", name: "values_body", widget: "text" }
+          - { label: "CTA Headline", name: "cta_headline", widget: "string" }
+          - { label: "CTA Subtext", name: "cta_subtext", widget: "string" }
+          - { label: "Quality Story Eyebrow", name: "veteran_eyebrow", widget: "string" }
+          - { label: "Quality Story Headline", name: "veteran_headline", widget: "string" }
+          - { label: "Quality Story Body", name: "veteran_body", widget: "text" }
+
+      - name: "quality"
+        label: "Quality Page"
+        file: "_data/quality.json"
+        format: json
+        fields:
+          - { label: "Page Eyebrow", name: "page_eyebrow", widget: "string" }
+          - { label: "Page Headline", name: "page_headline", widget: "string" }
+          - { label: "Page Subtitle", name: "page_subtitle", widget: "text" }
+          - label: "Quality Pillars"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Title", name: "name", widget: "string" }
+              - label: "Icon"
+                name: "icon"
+                widget: "select"
+                options: ["flask", "doc", "shield", "truck"]
+              - { label: "Description", name: "description", widget: "text" }

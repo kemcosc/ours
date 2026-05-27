@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop Peptides | Ours Peptides</title>
+  <meta name="description" content="Shop research-grade peptides at 99% HPLC purity — weight loss, anti-aging, injury repair and more. COA included with every order. Research use only." />
+  <link rel="icon" type="image/png" href="images/site-icon.png" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://app.snipcart.com" />
+  <link rel="preconnect" href="https://cdn.snipcart.com" />
+  <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.7.1/default/snipcart.css" />
+  <style>
+    .filter-bar { display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px; }
+    .filter-btn { font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:8px 18px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s; }
+    .filter-btn:hover,.filter-btn.active { background:var(--accent);border-color:var(--accent);color:#fff; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <a href="index.html" class="nav-logo"><img src="images/logo-white.png" alt="Ours Peptides" /></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="quality.html">Quality</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="nav-cta"><a href="#" class="snipcart-checkout cart-link" aria-label="Open cart"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Cart <span class="snipcart-items-count">0</span></a></li>
+      </ul>
+      <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false" type="button"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="eyebrow" id="page-eyebrow">All Peptides</div>
+      <h1 id="page-headline">The catalog.</h1>
+      <p class="subtitle" id="page-subtitle">Research-grade peptides at 99% HPLC purity.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="notice-band">
+        <strong>Setup note:</strong> Prices show <strong>$0.00</strong> as placeholders. Set your real prices in <code>_data/products.json</code>, and add your Snipcart public API key in each page before going live. The cart is inactive until your key is added.
+      </div>
+      <div class="filter-bar" id="filter-bar"></div>
+      <div class="prod-grid" id="products-grid">
+        <div style="text-align:center;padding:60px;color:var(--text-dim);grid-column:1/-1;">Loading products…</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ruo-band"><div class="container"><p data-site="disclaimer">All products are for laboratory and research use only. Not for human consumption.</p></div></div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="images/logo-white.png" alt="Ours Peptides" />
+          <p data-site="footer_description">Premium research-grade peptides with 99% HPLC purity.</p>
+          <p style="margin-top:12px;font-size:.9rem;"><a data-site="email_link" href="mailto:support@ourspeptides.com" style="color:var(--accent);">support@ourspeptides.com</a></p>
+        </div>
+        <div class="footer-col"><h4>Navigation</h4><ul>
+          <li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li>
+          <li><a href="quality.html">Quality</a></li><li><a href="contact.html">Contact</a></li>
+        </ul></div>
+        <div class="footer-col"><h4>Shop by goal</h4><ul>
+          <li><a href="shop.html?cat=weight-loss">Weight Loss</a></li>
+          <li><a href="shop.html?cat=anti-aging">Anti-Aging</a></li>
+          <li><a href="shop.html?cat=injury-repair">Injury Repair</a></li>
+          <li><a href="shop.html?cat=wellness">Wellness</a></li>
+        </ul></div>
+      </div>
+      <div class="footer-disclaimer" data-site="disclaimer"></div>
+      <div class="footer-bottom">
+        <span>© 2026 <span data-site="company_name">Ours Peptides</span>. All Rights Reserved.</span>
+        <span>Research Use Only</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script>
+    let allProducts = [], cats = [];
+    function renderProducts(filter) {
+      const grid = document.getElementById('products-grid');
+      const list = filter === 'all' ? allProducts : allProducts.filter(p => p.category === filter);
+      grid.innerHTML = list.length
+        ? list.map(p => productCardHTML(p, cats)).join('')
+        : '<div style="text-align:center;padding:60px;color:var(--text-dim);grid-column:1/-1;">No products in this category yet.</div>';
+    }
+    document.addEventListener('DOMContentLoaded', async () => {
+      const d = await loadData('products');
+      if (!d) return;
+      setText('#page-eyebrow', d.page_eyebrow);
+      setText('#page-headline', d.page_headline);
+      setText('#page-subtitle', d.page_subtitle);
+      allProducts = d.items || [];
+      cats = d.categories || [{ id:'all', label:'All Peptides' }];
+
+      const bar = document.getElementById('filter-bar');
+      bar.innerHTML = cats.map(c => `<button class="filter-btn" data-filter="${c.id}">${c.label}</button>`).join('');
+
+      // preselect category from ?cat= query param
+      const params = new URLSearchParams(window.location.search);
+      let initial = params.get('cat');
+      if (!initial || !cats.some(c => c.id === initial)) initial = 'all';
+
+      function activate(filter) {
+        document.querySelectorAll('.filter-btn').forEach(b =>
+          b.classList.toggle('active', b.dataset.filter === filter));
+        renderProducts(filter);
+      }
+      bar.querySelectorAll('.filter-btn').forEach(btn =>
+        btn.addEventListener('click', () => activate(btn.dataset.filter)));
+      activate(initial);
+    });
+  </script>
+  <script>
+  (function () {
+    var btn = document.querySelector('.nav-hamburger');
+    var links = document.querySelector('.nav-links');
+    if (!btn || !links) return;
+    btn.addEventListener('click', function (e) { e.preventDefault();
+      var open = !links.classList.contains('open');
+      links.classList.toggle('open', open); btn.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false'); });
+    links.addEventListener('click', function (e) { if (e.target.closest('a')) {
+      links.classList.remove('open'); btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); } });
+  })();
+  </script>
+  <div hidden id="snipcart" data-api-key="YOUR_SNIPCART_PUBLIC_API_KEY" data-config-modal-style="side" data-currency="usd"></div>
+  <script async src="https://cdn.snipcart.com/themes/v3.7.1/default/snipcart.js"></script>
+</body>
+</html>

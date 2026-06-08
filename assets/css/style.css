@@ -508,3 +508,56 @@ footer {
 
 @media (max-width:1000px){ .prod-grid,.featured-grid,.value-grid,.goal-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .prod-grid,.featured-grid,.value-grid,.goal-grid{ grid-template-columns:1fr; } }
+
+/* ============================================
+   CATEGORY BAR — second nav under main nav
+   ============================================ */
+.catbar {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0; right: 0;
+  z-index: 99;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  height: 44px;
+  display: flex;
+  align-items: center;
+}
+.catbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.catbar .container::-webkit-scrollbar { display: none; }
+.catbar a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 8px 18px;
+  border-radius: 3px;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+}
+.catbar a:hover { color: #fff; background: rgba(42,125,225,0.12); }
+.catbar a.active { color: #fff; background: var(--accent); }
+.catbar .sep { color: var(--text-dim); opacity: 0.35; font-size: 0.7rem; }
+
+/* Push everything else down by the catbar height */
+nav { /* unchanged */ }
+.hero, .page-hero { padding-top: calc(var(--nav-h) + 44px + 60px); }
+.page-hero { padding-bottom: 80px; }
+.hero { padding-bottom: 80px; }
+
+@media (max-width: 860px) {
+  .catbar { height: 42px; }
+  .catbar .container { justify-content: flex-start; padding: 0 16px; overflow-x: auto; }
+  .catbar a { padding: 6px 12px; font-size: 0.76rem; letter-spacing: 0.08em; }
+  .catbar .sep { display: none; }
+}

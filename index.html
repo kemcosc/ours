@@ -28,17 +28,25 @@
     </div>
   </nav>
 
+  <div class="catbar" id="catbar">
+    <div class="container">
+      <a href="shop.html" data-cat="all">All Peptides</a>
+      <span class="sep">·</span>
+      <a href="shop.html?cat=weight-loss" data-cat="weight-loss">Weight Loss</a>
+      <span class="sep">·</span>
+      <a href="shop.html?cat=anti-aging" data-cat="anti-aging">Anti-Aging</a>
+      <span class="sep">·</span>
+      <a href="shop.html?cat=injury-repair" data-cat="injury-repair">Injury Repair</a>
+      <span class="sep">·</span>
+      <a href="shop.html?cat=wellness" data-cat="wellness">Wellness</a>
+    </div>
+  </div>
+
+
   <section class="hero">
-    <svg class="hero-molecules" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <g stroke="rgba(42,125,225,0.35)" stroke-width="1.5" fill="rgba(42,125,225,0.55)">
-        <line x1="120" y1="140" x2="240" y2="220"/><line x1="240" y1="220" x2="200" y2="360"/><line x1="200" y1="360" x2="320" y2="430"/>
-        <line x1="980" y1="120" x2="1060" y2="250"/><line x1="1060" y1="250" x2="960" y2="350"/><line x1="960" y1="350" x2="1040" y2="470"/>
-        <line x1="560" y1="520" x2="680" y2="560"/><line x1="680" y1="560" x2="720" y2="440"/>
-        <circle cx="120" cy="140" r="7"/><circle cx="240" cy="220" r="10"/><circle cx="200" cy="360" r="7"/><circle cx="320" cy="430" r="9"/>
-        <circle cx="980" cy="120" r="8"/><circle cx="1060" cy="250" r="6"/><circle cx="960" cy="350" r="10"/><circle cx="1040" cy="470" r="7"/>
-        <circle cx="560" cy="520" r="6"/><circle cx="680" cy="560" r="9"/><circle cx="720" cy="440" r="7"/>
-      </g>
-    </svg>
+    <video class="hero-video" autoplay muted loop playsinline preload="auto">
+      <source src="images/hero.mp4" type="video/mp4" />
+    </video>
     <div class="hero-video-overlay"></div>
     <div class="hero-bg-grid"></div>
     <div class="hero-glow"></div>
@@ -227,5 +235,24 @@
   </script>
   <div hidden id="snipcart" data-api-key="YOUR_SNIPCART_PUBLIC_API_KEY" data-config-modal-style="side" data-currency="usd"></div>
   <script async src="https://cdn.snipcart.com/themes/v3.7.1/default/snipcart.js"></script>
+
+  <script>
+  (function () {
+    var bar = document.getElementById('catbar');
+    if (!bar) return;
+    var params = new URLSearchParams(window.location.search);
+    var cat = params.get('cat');
+    var path = window.location.pathname.split('/').pop() || 'index.html';
+    // On shop page with no ?cat, "All Peptides" is active. On shop with ?cat=X, that one is active.
+    // On other pages, nothing is active.
+    if (path === 'shop.html') {
+      var active = cat || 'all';
+      bar.querySelectorAll('a').forEach(function (a) {
+        if (a.dataset.cat === active) a.classList.add('active');
+      });
+    }
+  })();
+  </script>
+
 </body>
 </html>

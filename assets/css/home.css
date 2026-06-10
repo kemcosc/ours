@@ -332,3 +332,25 @@
   .hero-actions { flex-direction: column; }
   .quality-grid { max-width: 100%; }
 }
+
+/* ============================================
+   MOBILE VIDEO FIX
+   Make overlays click-through so taps reach the
+   video, and hide iOS's native play button overlay
+   ============================================ */
+.hero-video-overlay,
+.hero-bg-grid {
+  pointer-events: none;
+}
+
+/* Hide the iOS Safari native play button overlay */
+.hero-video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+.hero-video::-webkit-media-controls {
+  display: none !important;
+}
+.hero-video {
+  pointer-events: none;
+}

@@ -18,8 +18,53 @@
     .cert-body p { font-size:.95rem;line-height:1.75; }
     @media(max-width:768px){.cert-grid{grid-template-columns:1fr}}
   </style>
+  <script>
+  (function () {
+    var KEY = 'ours_age_v1';
+    var TTL = 2592000000; // 30 days in ms
+    try {
+      var v = localStorage.getItem(KEY);
+      if (v && Date.now() - parseInt(v, 10) < TTL) {
+        document.documentElement.classList.add('age-verified');
+      }
+    } catch (e) {}
+    document.addEventListener('DOMContentLoaded', function () {
+      var agree = document.getElementById('age-agree');
+      var decline = document.getElementById('age-decline');
+      if (agree) agree.addEventListener('click', function () {
+        try { localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
+        document.documentElement.classList.add('age-verified');
+      });
+      if (decline) decline.addEventListener('click', function () {
+        window.location.href = 'https://www.google.com';
+      });
+    });
+  })();
+  </script>
 </head>
 <body>
+  <!-- Age / research-use gate (shows on first visit, remembered 30 days) -->
+  <div class="age-gate" id="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
+    <div class="age-gate-card">
+      <div class="age-gate-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        Research Use Only
+      </div>
+      <h2 id="age-gate-title">Verify Before Entering</h2>
+      <p>Please confirm the following to access Ours Peptides:</p>
+      <ul class="age-gate-list">
+        <li>I am 21 years of age or older.</li>
+        <li>I understand all products are intended strictly for laboratory and research use only.</li>
+        <li>I will not use these products for human consumption.</li>
+      </ul>
+      <div class="age-gate-actions">
+        <button type="button" id="age-agree" class="btn btn-primary">I Agree — Enter Site</button>
+        <button type="button" id="age-decline" class="btn btn-outline">I Decline / Exit</button>
+      </div>
+      <p class="age-gate-finep">These statements have not been evaluated by the FDA. Products are not intended to diagnose, treat, cure, or prevent any disease.</p>
+    </div>
+  </div>
+
   <nav>
     <div class="container">
       <a href="index.html" class="nav-logo"><img src="images/logo-white.png" alt="Ours Peptides" /></a>

@@ -14,30 +14,61 @@
   <script>
   (function () {
     var KEY = 'ours_age_v1';
-    var TTL = 2592000000; // 30 days in ms
+    var TTL = 2592000000;
     try {
       var v = localStorage.getItem(KEY);
       if (v && Date.now() - parseInt(v, 10) < TTL) {
         document.documentElement.classList.add('age-verified');
       }
     } catch (e) {}
+
+    // Helper to attempt video.play() and swallow any rejection silently
+    function tryPlayVideo() {
+      var video = document.querySelector('.hero-video');
+      if (!video) return;
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+      try {
+        var p = video.play();
+        if (p && typeof p.catch === 'function') p.catch(function () {});
+      } catch (e) {}
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
       var agree = document.getElementById('age-agree');
       var decline = document.getElementById('age-decline');
       if (agree) agree.addEventListener('click', function () {
         try { localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
         document.documentElement.classList.add('age-verified');
+        // KEY: this play() call is inside the user's click handler,
+        // which iOS Safari accepts as user-initiated playback.
+        tryPlayVideo();
       });
       if (decline) decline.addEventListener('click', function () {
         window.location.href = 'https://www.google.com';
       });
+
+      // Try to autoplay normally as well (works on desktop and many mobile cases)
+      tryPlayVideo();
+
+      // Fallback: if the user taps anywhere on the page and video still isn't playing,
+      // start it on that user interaction. iOS allows this since it's user-initiated.
+      function onFirstInteraction() {
+        var video = document.querySelector('.hero-video');
+        if (video && video.paused) tryPlayVideo();
+        document.removeEventListener('touchstart', onFirstInteraction);
+        document.removeEventListener('click', onFirstInteraction);
+      }
+      document.addEventListener('touchstart', onFirstInteraction, { passive: true });
+      document.addEventListener('click', onFirstInteraction);
     });
   })();
   </script>
 </head>
 <body>
 
-  <!-- Age / research-use gate (shows on first visit, remembered 30 days) -->
+  <!-- Age / research-use gate -->
   <div class="age-gate" id="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
     <div class="age-gate-card">
       <div class="age-gate-mark">
@@ -88,7 +119,7 @@
   </div>
 
   <section class="hero">
-    <video class="hero-video" autoplay muted loop playsinline preload="auto">
+    <video class="hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture x5-playsinline>
       <source src="images/hero.mp4" type="video/mp4" />
     </video>
     <div class="hero-video-overlay"></div>

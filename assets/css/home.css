@@ -334,23 +334,13 @@
 }
 
 /* ============================================
-   MOBILE VIDEO FIX
-   Make overlays click-through so taps reach the
-   video, and hide iOS's native play button overlay
+   HERO VIDEO — mobile-friendly
    ============================================ */
+/* Make overlays click-through so taps reach the video.
+   DO NOT add pointer-events:none to .hero-video itself —
+   that would prevent the user from tapping if iOS shows
+   its play button. */
 .hero-video-overlay,
 .hero-bg-grid {
-  pointer-events: none;
-}
-
-/* Hide the iOS Safari native play button overlay */
-.hero-video::-webkit-media-controls-start-playback-button {
-  display: none !important;
-  -webkit-appearance: none;
-}
-.hero-video::-webkit-media-controls {
-  display: none !important;
-}
-.hero-video {
   pointer-events: none;
 }
